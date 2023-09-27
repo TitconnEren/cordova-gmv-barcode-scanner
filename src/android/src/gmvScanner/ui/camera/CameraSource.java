@@ -25,9 +25,9 @@ import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresPermission;
-import android.support.annotation.StringDef;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresPermission;
+import androidx.annotation.StringDef;
 import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -1097,9 +1097,11 @@ public class CameraSource {
          */
         @SuppressLint("Assert")
         void release() {
-            assert (mProcessingThread.getState() == State.TERMINATED);
-            mDetector.release();
-            mDetector = null;
+            assert (mProcessingThread == null || mProcessingThread.getState() == State.TERMINATED);
+            if (mDetector != null) {
+                mDetector.release();
+                mDetector = null;
+            }
         }
 
         /**
